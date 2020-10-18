@@ -60,7 +60,6 @@ export default {
       this.getPresonInfo();
     });
   },
-
   computed: {
     ...mapState({
       address: state => state.wallet.address,
