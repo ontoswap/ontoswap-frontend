@@ -1,0 +1,13 @@
+.home{
+  padding-left: 168px;
+  padding-top: 153px;
+  background-image: url('../../assets/image/bg_home.png');
+  background-repeat: no-repeat;
+  background-position: right top;
+  background-size: 526px 609px;
+  .balance-cards{
+    display: flex;
+    justify-content: space-between;
+    width: 930px;
+  }
+}
