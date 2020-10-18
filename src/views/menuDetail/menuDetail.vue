@@ -54,6 +54,7 @@
             v-if="!isApprove"
             class="btn" 
             @click="stake"
+            :loading="deposit.pending"
           >+</el-button>
           </div>
       </div>
