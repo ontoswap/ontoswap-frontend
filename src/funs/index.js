@@ -212,27 +212,21 @@ export const getAvailableBalance = async () => {
 
 export const getHomepageBalance = (length, callback) => {
   const { address } = store.state.wallet
-  const web3 = new Web3(provider)
+  const web3 = new Web3(CONTRACT_PROVIDER)
   const batch = new web3.BatchRequest()
-  console.log(1);
   const balanceContract = new web3.eth.Contract(abi, YFO_HASH)
   const rewardContract = new web3.eth.Contract(yfodistABI, YFODIST_HASH)
 
   batch.add(balanceContract.methods.balanceOf(address).call.request({ from: address }, _callback))
-  pairs.forEach(item => {
-    batch.add(rewardContract.methods.balanceOf(address).call.request({ from: address }, _callback))
-  })
-  console.log(2);
-
+  for(var item in pairs){
+    const id = pairs[item].id
+    batch.add(rewardContract.methods.pendingYfo(id, address).call.request({ from: address }, _callback))
+  }
   batch.execute()
-  console.log(3);
 
   const tmp = []
   function _callback(err, result) {
-
-  console.log(4);
     tmp.push(result)
-
     if(tmp.length == length) {
       callback(tmp)
     }

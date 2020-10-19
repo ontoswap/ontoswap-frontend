@@ -8,7 +8,7 @@ import Deposit from '../../components/deposit/deposit.vue'
 
 import { mapState } from "vuex";
 import { pairs, YFODIST_HASH, MAX_NUMBER } from '../../config/constant'
-import { 
+import {
   putApprove,
   getAvaliableLP,
   getStakedLP,
@@ -60,7 +60,6 @@ export default {
       this.getPresonInfo();
     });
   },
-  
   computed: {
     ...mapState({
       address: state => state.wallet.address,
@@ -72,16 +71,16 @@ export default {
       return pairs[this.type] && pairs[this.type].id;
     },
     harvestimg() {
-      return this.type && require(`../../assets/image/${this.type.split('-')[0]}.png`) ;
+      return this.type && require(`../../assets/image/${this.type.split('-')[0]}.png`);
     },
     stakingimg() {
-      return this.type && require(`../../assets/image/${this.type.split('-')[1]}.png`) ;
+      return this.type && require(`../../assets/image/${this.type.split('-')[1]}.png`);
     },
     isUnlock() {
       return !!this.address;
     },
     isApprove() {
-      return this.allowanceAmount - 2**32 <= 0;
+      return this.allowanceAmount - 2 ** 32 <= 0;
     }
   },
   watch: {
@@ -112,38 +111,38 @@ export default {
     harvest() {
       this.harvesting = true;
       putWithdrawAll(pairs[this.type].id, 0, (err, tx) => {
-        if(!err) {
+        if (!err) {
           this.transferBoxVisible = true;
           this.coinCode = this.type + ' FLP';
           this.coinAmount = this.stakedLp;
           this.tx = tx;
         }
       })
-      .then(res => {
-        this.harvesting = false;
-        getRewardLP(pairs[this.type].id).then(res => {
-          this.rewardsLp = getDisplayBalance(res);
+        .then(res => {
+          this.harvesting = false;
+          getRewardLP(pairs[this.type].id).then(res => {
+            this.rewardsLp = getDisplayBalance(res);
+          });
         });
-      });
     },
     approve() {
       this.approving = true;
       putApprove(pairs[this.type].hash, (err, tx) => {
-        if(!err) {
+        if (!err) {
           this.transferBoxVisible = true;
           this.coinCode = '';
           this.coinAmount = '';
           this.tx = tx;
         }
       })
-      .then(res => {
-        this.approving = false;
-        this.allowanceAmount = MAX_NUMBER;
-        const { netVersion, address } = this.$store.state.wallet
-        localStorage.setItem(`${this.type}-${address}-${netVersion}`, this.allowanceAmount)
-      }).catch(err => {
-        this.approving = false;
-      });
+        .then(res => {
+          this.approving = false;
+          this.allowanceAmount = MAX_NUMBER;
+          const { netVersion, address } = this.$store.state.wallet
+          localStorage.setItem(`${this.type}-${address}-${netVersion}`, this.allowanceAmount)
+        }).catch(err => {
+          this.approving = false;
+        });
     },
     unstake() {
       this.unstakeContent.dialogVisible = true;
@@ -151,26 +150,26 @@ export default {
     onUnstake(amount) {
       this.unstakeContent.pending = true;
       putWithdrawAll(pairs[this.type].id, amount, (err, tx) => {
-        if(!err) {
+        if (!err) {
           this.transferBoxVisible = true;
           this.coinCode = this.type + ' FLP';
           this.coinAmount = amount;
           this.tx = tx;
         }
       })
-      .then(res => {
-        this.unstakeContent.pending = false;
-        this.unstakeContent.dialogVisible = false;
-        getStakedLP(pairs[this.type].id).then(res => {
-          this.stakedLp = res.amount;
-          this.unstakeContent.available = getFullDisplayBalance(res.amount);
+        .then(res => {
+          this.unstakeContent.pending = false;
+          this.unstakeContent.dialogVisible = false;
+          getStakedLP(pairs[this.type].id).then(res => {
+            this.stakedLp = res.amount;
+            this.unstakeContent.available = getFullDisplayBalance(res.amount);
+          });
+          getAvaliableLP(pairs[this.type].hash).then(res => {
+            this.deposit.available = getFullDisplayBalance(res);
+          });
         });
-        getAvaliableLP(pairs[this.type].hash).then(res => {
-          this.deposit.available = getFullDisplayBalance(res);
-        });
-      });
     },
-    onCancelUnstake(){
+    onCancelUnstake() {
       this.unstakeContent.dialogVisible = false;
     },
     stake() {
@@ -179,10 +178,7 @@ export default {
     onDeposit(amount) {
       this.deposit.pending = true;
       putDeposit(pairs[this.type].id, amount, (err, tx) => {
-        this.deposit.pending = false;
-        this.deposit.dialogVisible = false;
-
-        if(!err) {
+        if (!err) {
           setTimeout(() => {
             this.transferBoxVisible = true;
             this.tx = tx;
@@ -191,7 +187,9 @@ export default {
           }, 600)
         }
       })
-      .then(res => {
+        .then(res => {
+          this.deposit.pending = false;
+          this.deposit.dialogVisible = false;
           getStakedLP(pairs[this.type].id).then(res => {
             this.stakedLp = res.amount;
             this.unstakeContent.available = getFullDisplayBalance(res.amount);
@@ -200,7 +198,7 @@ export default {
             this.deposit.available = getFullDisplayBalance(res);
           });
         }
-      );
+        );
     },
     onCancel() {
       this.deposit.dialogVisible = false;
@@ -212,7 +210,7 @@ export default {
         localStorage.setItem(`${this.type}-${address}-${netVersion}`, this.allowanceAmount)
       });
     },
-    formatDisplay(num){
+    formatDisplay(num) {
       return getDisplayLP(num)
     },
   }

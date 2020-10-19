@@ -53,22 +53,26 @@ export default {
       })
     },
     getPresonInfo(){
-      getAvailableBalance().then(res => {
-        this.balanceContent.number = getBalanceNumber(res)
-      })
-      let rewards = []
-      for(let item in pairs){
-        rewards.push(getRewardLP(pairs[item].id))
-      }
-      Promise.all(rewards).then(res => {
+      // getAvailableBalance().then(res => {
+      //   this.balanceContent.number = getBalanceNumber(res)
+      // })
+      // let rewards = []
+      // for(let item in pairs){
+      //   rewards.push(getRewardLP(pairs[item].id))
+      // }
+      // Promise.all(rewards).then(res => {
+      //   const pedingReward = res.reduce((pre, next) => {
+      //     return pre + Number(next) 
+      //   }, 0)
+      //   this.balanceContent.subNumber = getBalanceNumber(pedingReward)
+      // })
+      getHomepageBalance(4, (res) => {
+        this.balanceContent.number = getBalanceNumber(res.splice(0,1)[0])
         const pedingReward = res.reduce((pre, next) => {
           return pre + Number(next) 
         }, 0)
         this.balanceContent.subNumber = getBalanceNumber(pedingReward)
       })
-      // getHomepageBalance(4, (res) => {
-      //   console.log(res)
-      // })
     }
   },
   watch: {
