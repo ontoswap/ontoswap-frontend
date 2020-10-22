@@ -25,7 +25,7 @@ export default {
       }
     },
     goEtherscan(){
-
+      window.open('https://etherscan.io/address/' + this.address)
     },
     signOut() {
       const wallet = {

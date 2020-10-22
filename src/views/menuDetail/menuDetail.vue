@@ -5,11 +5,11 @@
     <div :class="$.content">
 
       <div :class="$.title">
-        <SubTitle :subTitle="`${$t('20')} ${type} SLP ${$t('30')} YFO`"/>
+        <SubTitle :subTitle="`${$t('20')} ${type} LP ${$t('30')} `"/>
         <Space height="36"/>
         <p>{{$t('40')}}</p>
         <Space height="36"/>
-        <p>{{`${type} SLP ${$t('50')}`}}</p>
+        <p>{{`${type} LP ${$t('50')}`}}</p>
       </div>
 
       <Space width="32"/>
@@ -43,7 +43,7 @@
             v-show="isApprove"
             @click="approve"
             :loading="approving"
-          >{{$t('90')}} {{type}} SLP</el-button>
+          >{{$t('90')}} {{type}} LP</el-button>
           <el-button
             v-if="!isApprove"
             class="btn" 

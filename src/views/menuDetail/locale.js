@@ -2,7 +2,7 @@ export default {
   en: {
     10: '🦄 UNI Unicorn',
     20: 'Deposit',
-    30: 'Tokens and earn',
+    30: 'Tokens and earn YFO',
     40: 'Every time you stake and unstake LP tokens, the contract will automagically harvest YFO rewards for you!',
     50: 'Info',
     60: 'Earned',
@@ -13,8 +13,8 @@ export default {
   },
   zh: {
     10: '🦄 UNI Unicorn',
-    20: '质押',
-    30: '流动性，然后获取',
+    20: '每次质押和解除质押',
+    30: '通证时，智能合约将自动发放YFO奖励',
     40: 'Every time you stake and unstake LP tokens, the contract will automagically harvest YFO rewards for you!',
     50: '信息',
     60: '收益',

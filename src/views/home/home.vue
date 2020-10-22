@@ -8,6 +8,11 @@
       <BalanceCard :content="balanceContent" />
       <BalanceCard :content="totalSupplyContent" />
     </div>
+    <el-dialog width="400px" :title="$t('80')" :visible="visible" :append-to-body="true" :before-close="handleClose">
+      <div :class="$['tips']">
+        {{$t('90')}}
+      </div>
+    </el-dialog>
   </div>
 </template>
 <style src="./home.scss" lang="scss" module="$"></style>
