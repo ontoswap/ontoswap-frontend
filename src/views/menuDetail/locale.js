@@ -13,9 +13,9 @@ export default {
   },
   zh: {
     10: '🦄 UNI Unicorn',
-    20: '每次质押和解除质押',
-    30: '通证时，智能合约将自动发放YFO奖励',
-    40: 'Every time you stake and unstake LP tokens, the contract will automagically harvest YFO rewards for you!',
+    20: '质押',
+    30: '通证，然后获取 YFO',
+    40: '每次质押和解除质押LP通证时，智能合约将自动发放YFO奖励。',
     50: '信息',
     60: '收益',
     70: '收取',
