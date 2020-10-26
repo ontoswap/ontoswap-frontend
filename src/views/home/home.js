@@ -3,15 +3,8 @@ import Title from '../../components/title/title.vue'
 import SubTitle from '../../components/title/subTitle.vue'
 import BalanceCard from '../../components/balanceCard/balanceCard.vue'
 import Space from '../../components/space/space.vue'
-import { 
-  getTotalSupply,
-  getRewardPerBlock,
-  getAvailableBalance,
-  getRewardLP,
-  getHomepageBalance
-} from '../../funs/index'
+import { homeRequestsInBatch } from '../../choco/batch'
 import { getBalanceNumber } from "../../utils/format";
-import { pairs } from '../../config/constant'
 
 export default {
   name: 'Home',
@@ -93,11 +86,33 @@ export default {
   watch: {
     '$store.state.wallet.address'(address, oldAddress) {
       if (!oldAddress && address) {
-        this.getPresonInfo();
+        this.requests();
       }
     },
     '$i18n.locale'() {
       this.formatContent()
     },
+  },
+  mounted() {
+    this.requests()
+  },
+  methods: {
+    requests() {
+      homeRequestsInBatch([
+        (err, result) => {
+          this.totalSupplyContent.number = getBalanceNumber(result)
+        },
+        (err, result) => {
+          this.totalSupplyContent.subNumber = getBalanceNumber(result)
+        },
+        (res) => {
+          this.balanceContent.number = getBalanceNumber(res.splice(0,1)[0])
+          const pedingReward = res.reduce((pre, next) => {
+            return pre + Number(next) 
+          }, 0)
+          this.balanceContent.subNumber = getBalanceNumber(pedingReward)
+        },
+      ])
+    }
   },
 }
