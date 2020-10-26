@@ -1,5 +1,5 @@
 import messages from './local'
-import {init, connect, getAvailableBalance} from '../../funs/index'
+import {init, connect, getAvailableBalance} from '../../choco/index'
 import { getDisplayBalance } from "../../utils/format";
 
 export default {

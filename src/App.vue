@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app">
     <div :class="$['app-header']">
       <Header />
     </div>
@@ -12,7 +12,7 @@
   </div>
 </template>
 <style lang="scss" module="$">
-:global(#app) {
+:global(.app) {
   position: relative;
   min-height: 100vh;
   max-width: 1440px;
@@ -40,7 +40,7 @@
 <script>
 import Header from "@/components/header/header.vue";
 import Footer from "@/components/footer/footer.vue";
-import { init, connect } from "./funs/index";
+import { init, connect } from "./choco/index";
 
 export default {
   name: "App",

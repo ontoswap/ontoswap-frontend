@@ -7,16 +7,14 @@ import MenuCard from '../../components/menuCard/menuCard.vue'
 import Deposit from '../../components/deposit/deposit.vue'
 
 import { mapState } from "vuex";
-import { pairs, YFODIST_HASH, MAX_NUMBER } from '../../config/constant'
+import { pairs, MAX_NUMBER } from '../../config/constant'
 import {
   putApprove,
-  getAvaliableLP,
-  getStakedLP,
   getRewardLP,
-  getAllowance,
   putDeposit,
   putWithdrawAll
-} from '../../funs/index'
+} from '../../choco/index'
+import { menuDetailRequestsInBatch } from '../../choco/batch'
 import { getDisplayBalance, getDisplayLP, getFullDisplayBalance } from "../../utils/format";
 
 export default {
@@ -92,21 +90,25 @@ export default {
   },
   methods: {
     getPresonInfo() {
-      if (!this.$store.state.wallet.address) return;
-      getAvaliableLP(pairs[this.type].hash).then(res => {
-        this.deposit.available = getFullDisplayBalance(res);
-      });
-      getStakedLP(pairs[this.type].id).then(res => {
-        this.stakedLp = res.amount;
-        this.unstakeContent.available = getFullDisplayBalance(res.amount);
-      });
-      getRewardLP(pairs[this.type].id).then(res => {
-        this.rewardsLp = getDisplayBalance(res);
-      });
-      const { netVersion, address } = this.$store.state.wallet
-      const allowanceAmount = localStorage.getItem(`${this.type}-${address}-${netVersion}`)
-      this.allowanceAmount = allowanceAmount || 0
-      this.getAllowance(pairs[this.type].hash, YFODIST_HASH)
+      if (!this.$store.state.wallet.address) {
+        return
+      }
+
+      menuDetailRequestsInBatch(pairs[this.type], [
+        (err, result) => {
+          this.deposit.available = getFullDisplayBalance(result);
+        },
+        (err, result) => {
+          this.stakedLp = result.amount;
+          this.unstakeContent.available = getFullDisplayBalance(result.amount);
+        },
+        (err, result) => {
+          this.rewardsLp = getDisplayBalance(result);
+        },
+        (err, result) => {
+          this.allowanceAmount = result
+        },
+      ])
     },
     harvest() {
       this.harvesting = true;
@@ -138,8 +140,6 @@ export default {
         .then(res => {
           this.approving = false;
           this.allowanceAmount = MAX_NUMBER;
-          const { netVersion, address } = this.$store.state.wallet
-          localStorage.setItem(`${this.type}-${address}-${netVersion}`, this.allowanceAmount)
         }).catch(err => {
           this.approving = false;
         });
@@ -160,13 +160,8 @@ export default {
         .then(res => {
           this.unstakeContent.pending = false;
           this.unstakeContent.dialogVisible = false;
-          getStakedLP(pairs[this.type].id).then(res => {
-            this.stakedLp = res.amount;
-            this.unstakeContent.available = getFullDisplayBalance(res.amount);
-          });
-          getAvaliableLP(pairs[this.type].hash).then(res => {
-            this.deposit.available = getFullDisplayBalance(res);
-          });
+
+          this.getPresonInfo()
         });
     },
     onCancelUnstake() {
@@ -190,25 +185,13 @@ export default {
         .then(res => {
           this.deposit.pending = false;
           this.deposit.dialogVisible = false;
-          getStakedLP(pairs[this.type].id).then(res => {
-            this.stakedLp = res.amount;
-            this.unstakeContent.available = getFullDisplayBalance(res.amount);
-          });
-          getAvaliableLP(pairs[this.type].hash).then(res => {
-            this.deposit.available = getFullDisplayBalance(res);
-          });
+
+          this.getPresonInfo()
         }
         );
     },
     onCancel() {
       this.deposit.dialogVisible = false;
-    },
-    getAllowance(addressHash, spendHash) {
-      getAllowance(addressHash, spendHash).then(res => {
-        this.allowanceAmount = res;
-        const { netVersion, address } = this.$store.state.wallet
-        localStorage.setItem(`${this.type}-${address}-${netVersion}`, this.allowanceAmount)
-      });
     },
     formatDisplay(num) {
       return getDisplayLP(num)
