@@ -37,17 +37,17 @@ export default {
         {
           type: 'OSWAP-USDT',
           title: 'OSWAP',
-          subTitle: `${this.$t('30')} OSWAP-USDT SLP<br />${this.$t('40')} YFO`,
+          subTitle: `${this.$t('30')} OSWAP-USDT LP<br />${this.$t('40')} YFO`,
         },
         {
           type: 'YFO-USDT',
           title: 'YFO',
-          subTitle: `${this.$t('30')} YFO-USDT SLP<br />${this.$t('40')} YFO`,
+          subTitle: `${this.$t('30')} YFO-USDT LP<br />${this.$t('40')} YFO`,
         },
         {
           type: 'DAI-USDT',
           title: 'DAI',
-          subTitle: `${this.$t('30')} DAI-USDT SLP<br />${this.$t('40')} YFO`,
+          subTitle: `${this.$t('30')} DAI-USDT LP<br />${this.$t('40')} YFO`,
         }
       ];
 
